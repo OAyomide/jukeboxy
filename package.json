@@ -1,0 +1,30 @@
+{
+  "name": "jukeboxy",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "start": "node node_modules/react-native/local-cli/cli.js start",
+    "test": "jest"
+  },
+  "dependencies": {
+    "@monterosa/react-native-parallax-scroll": "^1.8.0",
+    "lowdb": "^1.0.0",
+    "moment": "^2.22.0",
+    "native-base": "^2.4.1",
+    "react": "^16.3.0-alpha.1",
+    "react-native": "0.54.3",
+    "react-native-elements": "^0.19.1",
+    "react-native-fs": "^2.9.12",
+    "react-native-vector-icons": "^4.6.0",
+    "react-navigation": "^1.5.8"
+  },
+  "devDependencies": {
+    "babel-jest": "22.4.3",
+    "babel-preset-react-native": "4.0.0",
+    "jest": "22.4.3",
+    "react-test-renderer": "^16.3.0-alpha.1"
+  },
+  "jest": {
+    "preset": "react-native"
+  }
+}
