@@ -12,7 +12,9 @@ import {
   View,
   Button,
   ToastAndroid,
-  TouchableOpacity
+  TouchableOpacity,
+  Easing,
+  Animated
 } from 'react-native';
 import {StackNavigator, NavigationActions} from 'react-navigation'
 import Home from './Home'
@@ -20,6 +22,36 @@ import ArtistList from '../components/Artists/ArtistList'
 import SingleArtist from './Artists/SingleArtist';
 import SongSelected from './Artists/SongSelected';
 
+
+const FadeTransition = (index, position) => {
+  const sceneRange = [index - 1, index]
+  const outputOpacity = [0,1]
+  const transition = position.interpolate({
+    inputRange: sceneRange,
+    outputRange: outputOpacity
+  });
+  return {
+    opacity: transition
+  }
+}
+
+const NavigationConfig = () => {
+  return {
+      transitionSpec: {
+        duration: 750,
+        easing: Easing.out(Easing.poly(4)),
+        timing: Animated.timing,
+        useNativeDriver: true,
+    },
+    screenInterpolator: (screenProps) => {
+      const position = screenProps.position;
+      const scene = screenProps.scene
+      const index = scene.index
+
+      return FadeTransition(index, position)
+    }
+  }
+}
 type Props = {};
 class Welcome extends Component<Props> {
 
@@ -65,6 +97,7 @@ export default class App extends React.Component {
   render() {
     return <RootStack
           screenProps={'Props passed'}
+          
     />
   }
 }
@@ -84,16 +117,17 @@ const RootStack = StackNavigator({
     screen: ArtistList
   },
   ArtistHome: {
-    screen: ArtistList
+    screen: ArtistList,
   },
   ArtistSongs: {
-    screen: SingleArtist
+    screen: SingleArtist,
   },
   SongSelected: {
-    screen: SongSelected
+    screen: SongSelected,
   }
 }, {
-  initialRouteName: 'Welcome'
+  initialRouteName: 'Welcome',
+  transitionConfig: NavigationConfig
 })
 
 const styles = StyleSheet.create({
