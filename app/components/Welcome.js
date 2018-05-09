@@ -38,7 +38,7 @@ const FadeTransition = (index, position) => {
 const NavigationConfig = () => {
   return {
       transitionSpec: {
-        duration: 750,
+        duration: 650,
         easing: Easing.out(Easing.poly(4)),
         timing: Animated.timing,
         useNativeDriver: true,

@@ -62,7 +62,7 @@ export default class SingleArtist extends Component {
       headerTitleStyle: {
         fontWeight: '100',
       },
-      backgroundColor: ((time < 8) || (time >= 19 && time <= 23) || (time===0)) ? `white`: 'black'
+      headerTintColor: ((time < 8) || (time >= 19 && time <= 23) || (time===0)) ? 'white': '#242928'
     }
 
     const transitionConfig = () => {
@@ -121,7 +121,7 @@ export default class SingleArtist extends Component {
         data={this.state.data}
         keyExtractor = {songs => songs.title}
         renderItem = {(songs) => (
-          <ListItem itemDivider avatar onPress={() => this.props.navigation.navigate('SongSelected', {selected_song: songs, selected_song_artiste: this.state.name})}>
+          <ListItem itemDivider avatar onPress={() => this.props.navigation.navigate('SongSelected', {selected_song: songs, selected_song_artiste: this.state.name, songs: this.state.data})}>
             <Left>
                 <Thumbnail source={{uri: songs.item.albumImage}} square/>
               </Left>
