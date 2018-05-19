@@ -47,21 +47,6 @@ export default class SongSelected extends Component {
 
   }
 
-
-  // componentWillMount() {
-  //   console.log(`COMPONENT UNMOUNTING . . . .`);
-  //   whiiip.pause((err) => {
-  //     if (err) {
-  //       console.log(`Error pausing`)
-  //     } else {
-  //       this.setState({
-  //         playing: false
-  //       })
-  //       console.log(`Track successfully paused`);
-  //     }
-  //   });
-  // }
-
   headerIcon = () => {
     return(
       <View>
@@ -163,11 +148,6 @@ export default class SongSelected extends Component {
         whiiip.pause(err => err? console.log(`Error pausing track`) : console.log(`Track paused`));
         whiiip.getCurrentTime((s) => {
           console.log(`Paused at ${s}`);
-          t = s
-        });
-
-        setInterval(() => {
-          this.setState({currentTime: t})
         });
       }
 
@@ -184,12 +164,6 @@ export default class SongSelected extends Component {
           });
         });
       };
-
-      // syncIt = () => {
-      //   setInterval(() => {
-      //     this.setState({currentTime:})
-      //   }, 1000)
-      // }
        
   render() {
     let songPercent;
@@ -220,20 +194,20 @@ export default class SongSelected extends Component {
               <Slider style={style.slider}
                   thumbStyle={style.slider_thumb}
                   trackStyle={style.slider_track_style}
-                  minimumTrackTintColor="#35d3ff"
-                  step={1}
-                  minimumValue = {0}
-                  maximumValue = {this.state.songDuration}
-                  onValueChange={(this.state.playing === true)? (val) => this.seekSong(val) : console.log(`Not playing!`)}
-                  value = {this.state.currentTime}
-                  onSlidingStart={() => this.onSlidingStart()}
+                  // minimumTrackTintColor="#35d3ff"
+                  // step={1}
+                  // minimumValue = {0}
+                  // maximumValue = {this.state.songDuration}
+                  // onValueChange={(this.state.playing === true)? (val) => this.seekSong(val) : console.log(`Not playing!`)}
+                  // value = {this.state.currentTime}
+                  // onSlidingStart={() => this.onSlidingStart()}
                   // step={1}
                   // value = {(this.state.currentTime/this.state.songDuration) * 100}
-              />
-              <Text>{this.state.currentTime}</Text>
-              <Text> Percentage:</Text>
+                  />
             </View>
             </Body>
+            <Text>{this.state.currentTime}</Text>
+              <Text> Percentage:</Text>
             <View style={{flexDirection: 'row', paddingTop:10}}>
               <Icon name="autorenew" fontSize={10} type="MaterialCommunityIcons" style={style.action_button_icon_replay}/>
               <Icon name="skip-previous" type="MaterialIcons" style={style.action_button_icons_prev}/>
@@ -346,4 +320,4 @@ headerStyle: {
   height: 30
 }
 
-})
+});
