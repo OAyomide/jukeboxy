@@ -246,7 +246,7 @@ export default class SongSelected extends Component {
                 onAudioFocusChanged={(v) => this.setState({playing: true})}
                 onEnd = {this.onEnd}
                 resizeMode = "cover"
-                repeat={true}
+                repeat={this.state.repeat}
                 onProgress={this.setTime}
               />
             </View>
@@ -348,14 +348,14 @@ action_button_icon_replay: {
   paddingLeft: 20,
   paddingTop: 17,
   fontSize: 20,
-  color: '#35d3ff'
+  color: 'white'
 },
 
 action_button_icon_shuffle: {
   fontSize: 20,
   paddingTop: 17,
   paddingLeft: 35,
-  color: '#35d3ff'
+  color:'white'
 },
 
 action_buttons_container: {
