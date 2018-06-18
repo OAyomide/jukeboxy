@@ -52,6 +52,8 @@ const NavigationConfig = () => {
     }
   }
 }
+
+
 type Props = {};
 class Welcome extends Component<Props> {
 
