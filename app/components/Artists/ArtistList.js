@@ -27,6 +27,7 @@ import {Artists} from '../../mockdata/mockdata'
 import {NavigationAction} from 'react-navigation';
 import SingleArtist from '../Artists/SingleArtist';
 
+
 export default class ArtistList extends Component {
   constructor(props){
     super(props);
@@ -73,7 +74,7 @@ renderFooter = () => {
     </Text>
   )
 }
-  
+
   render() {
     
     return(

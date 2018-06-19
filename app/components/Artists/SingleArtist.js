@@ -26,18 +26,10 @@ import {
 } from 'react-native';
 import ParallaxScroll from '@monterosa/react-native-parallax-scroll'
 import moment from 'moment';
-import RNFS from 'react-native-fs';
 
-const title_saved_state = RNFS.DocumentDirectoryPath + '/db.json'
-const album_saved_state = RNFS.DocumentDirectoryPath + '/album.txt'
-const icon_saved_state = RNFS.DocumentDirectoryPath + '/icon.txt'
-//we want to read files and directories under main bundle
-RNFS.readDir(RNFS.DocumentDirectoryPath)
-  .then(result => {
-    console.log(`Gotten result::`, result)
-  });
-
-
+import {createTransition, FlipX, FlipY} from 'react-native-transition'
+import Selected from './SongSelected'
+const Transition = createTransition(FlipX);
 const darkColor = '#242928'
 const time = moment().hour();
 const text = 'songs'
@@ -70,7 +62,31 @@ export default class SingleArtist extends Component {
       headerTitleStyle: {
         fontWeight: '100',
       },
-      headerTintColor: ((time < 8) || (time >= 19 && time <= 23) || (time===0)) ? 'white': 'dark'
+      headerTintColor: ((time < 8) || (time >= 19 && time <= 23) || (time===0)) ? 'white': '#242928'
+    }
+
+    const transitionConfig = () => {
+      return {
+        transitionSpec: {
+          duration: 750,
+          easing: Easing.out(Easing.poly(4)),
+          timing: Animated.timing,
+          useNativeDriver: true,
+        },
+        screenInterpolator: sceneProps => {      
+          const { layout, position, scene } = sceneProps
+    
+          const thisSceneIndex = scene.index
+          const width = layout.initWidth
+    
+          const translateX = position.interpolate({
+            inputRange: [thisSceneIndex - 1, thisSceneIndex],
+            outputRange: [width, 0],
+          })
+    
+          return { transform: [ { translateX } ] }
+        },
+      }
     }
   }
 
@@ -84,77 +100,6 @@ export default class SingleArtist extends Component {
     })
   }
 
-  componentDidMount() {
-    //read the saved state from the DB
-    RNFS.readFile(title_saved_state, 'utf8')
-    .then(file => {
-      this.setState({
-        currentName: file
-      })
-      console.log(`Title of song saved`, file.toString())
-    })
-    .catch(err => console.log(`Error reading from the DB`, err.message));
-
-
-    RNFS.readFile(album_saved_state, 'utf8')
-    .then(file => {
-      this.setState({
-        currentAlbum: file
-      })
-      console.log(`Current Album name saved is::`, file.toString())
-    })
-    .catch(err => console.log(`Error reading from the DB`, err.message));
-
-    RNFS.readFile(icon_saved_state, 'utf8')
-    .then(file => {
-      this.setState({
-        currentIcon: file
-      })
-      console.log(`Current Icon saved is::`, file.toString())
-    })
-    .catch(err => console.log(`Error reading from the DB`, err.message));
-    // RNFS.readFile(album_saved_state, 'utf8')
-    // .then(file => console.log(`Album name saved`, file.toString()))
-    // .catch(err => console.log(`Error reading from the DB`, err.message));
-
-    // RNFS.readFile(icon_saved_state, 'utf8')
-    // .then(file => console.log(`Saved icon URI to state`, file.toString()))
-    // .catch(err => console.log(`Error reading from the DB`, err.message));
-  }
-
-  componentWillUnmount() {
-    if (this.state.currentName) {
-      state = this.state.currentName
-      console.log(`State has something`, this.state.currentName);
-      
-      RNFS.writeFile(title_saved_state, this.state.currentName, 'utf8')
-        .then(done => {
-          console.log(`Written to the DB successfully`);
-        })
-        .catch(err => console.log(`Error writing to file`, err.message));
-
-        RNFS.writeFile(album_saved_state, this.state.currentAlbum, 'utf8')
-        .then(done => {
-          console.log(`Written to the DB successfully`);
-        })
-        .catch(err => console.log(`Error writing to file`, err.message));
-
-
-        RNFS.writeFile(icon_saved_state, this.state.currentIcon, 'utf8')
-        .then(done => {
-          console.log(`Written to the DB successfully`);
-        })
-        .catch(err => console.log(`Error writing to file`, err.message));
-
-        
-
-
-    } else {
-      console.log(`State is empty`)
-    }
-
-    console.log(`After the component unmounted, the state is::`, state);
-  }
   
   render() {
     return(
@@ -176,7 +121,7 @@ export default class SingleArtist extends Component {
         data={this.state.data}
         keyExtractor = {songs => songs.title}
         renderItem = {(songs) => (
-          <ListItem itemDivider avatar onPress={() => this.changeName(songs)}>
+          <ListItem itemDivider avatar onPress={() => this.props.navigation.navigate('SongSelected', {selected_song: songs, selected_song_artiste: this.state.name, songs: this.state.data})}>
             <Left>
                 <Thumbnail source={{uri: songs.item.albumImage}} square/>
               </Left>
@@ -197,18 +142,9 @@ export default class SingleArtist extends Component {
         
       </List>
         </Content>
-        <Footer style={{backgroundColor: 'grey'}}>
-          <Left>
-            <Thumbnail source={{uri: this.state.currentIcon}? {uri: this.state.currentIcon}: {uri: 'https://upload.wikimedia.org/wikipedia/commons/c/c1/LP_Vinyl_Symbol_Icon.png'}}/>
-          </Left>
-          <Body>
-          <Text>{(!this.state.currentName)?"Not playing":this.state.currentName}</Text>
-          </Body>
-        </Footer>
       </Container>
     )
   }
-
 }
 
 const style = StyleSheet.create({
