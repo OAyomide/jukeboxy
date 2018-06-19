@@ -128,6 +128,9 @@ export default class SongSelected extends Component {
        onSlidingChange = (val) => {
          console.log(`Sliding value has changed`);
          console.log(`Value is: ${Math.floor(val)}`);
+         this.setState({
+           currentTime: Math.floor(val)
+         });
          /**
           * Slider bug fix.
           */
